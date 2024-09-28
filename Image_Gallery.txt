@@ -1,0 +1,167 @@
+HTML CODE :-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="gallery-container">
+        <div class="gallery">
+            <img src="netaji.jpg" alt="Image 1" class="gallery-item">
+            <img src="book.jpg" alt="Image 2" class="gallery-item">
+        </div>
+        <button class="prev" onclick="prevImage()">❮</button>
+        <button class="next" onclick="nextImage()">❯</button>
+    </div>
+
+    <!-- Modal for image zoom -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div id="caption"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+CSS CODE :-
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.gallery-container {
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    overflow: hidden;
+}
+
+.gallery {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+}
+
+.gallery-item {
+    min-width: 100%;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 1000;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+/* Modal for zoom effect */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+    animation: zoom 0.6s;
+}
+
+@keyframes zoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+JAVASRIPT CODE :-
+
+let currentIndex = 0;
+const images = document.querySelectorAll('.gallery-item');
+const totalImages = images.length;
+
+function updateGallery() {
+    const gallery = document.querySelector('.gallery');
+    gallery.style.transform = translateX(-${currentIndex * 100}%);
+}
+
+function nextImage() {
+    currentIndex = (currentIndex + 1) % totalImages;
+    updateGallery();
+}
+
+function prevImage() {
+    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+    updateGallery();
+}
+
+// Modal Image Zoom Feature
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
+const captionText = document.getElementById('caption');
+
+images.forEach((image, index) => {
+    image.addEventListener('click', () => {
+        modal.style.display = 'block';
+        modalImg.src = image.src;
+        captionText.innerHTML = image.alt;
+    });
+});
+
+function closeModal() {
+    modal.style.display = 'none';
+}

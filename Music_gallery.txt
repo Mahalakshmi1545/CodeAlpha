@@ -1,0 +1,132 @@
+HTML CODE :-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Music Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="music-player">
+        <h2 id="song-title">Song Title</h2>
+        <audio id="audio" controls>
+            <source id="audio-source" src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <div class="controls">
+            <button id="prev">Previous</button>
+            <button id="play">Play</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+CSS CODE :-
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.music-player {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.controls button {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.controls button:hover {
+    background-color: #0056b3;
+}
+
+
+
+JAVASCRIPT CODE :-
+
+const songs = [
+    {
+        title: "Pranavalaya song from Shyam Singha Roy",
+        src: "Pranavalaya.mp3"  // Replace with your audio file path
+    },
+    {
+        title: "Ekkado Putti from Student No.1",
+        src: "Ekkado Putti.mp3" 
+    },
+    {
+        title: "Neetho Unte Challu from Bimbisara",
+        src: "Neetho Unte Challu.mp3"  // Replace with your audio file path
+    }
+];
+
+let currentSongIndex = 0;
+
+const audio = document.getElementById('audio');
+const audioSource = document.getElementById('audio-source');
+const songTitle = document.getElementById('song-title');
+
+function loadSong(index) {
+    const song = songs[index];
+    songTitle.innerText = song.title;
+    audioSource.src = song.src;
+    audio.load();
+}
+
+function playSong() {
+    audio.play();
+}
+
+function pauseSong() {
+    audio.pause();
+}
+
+function nextSong() {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    loadSong(currentSongIndex);
+    playSong();
+}
+
+function prevSong() {
+    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    loadSong(currentSongIndex);
+    playSong();
+}
+
+document.getElementById('play').addEventListener('click', () => {
+    if (audio.paused) {
+        playSong();
+    } else {
+        pauseSong();
+    }
+});
+
+document.getElementById('next').addEventListener('click', nextSong);
+document.getElementById('prev').addEventListener('click', prevSong);
+
+// Load the first song
+loadSong(currentSongIndex);
+
+
+
+
